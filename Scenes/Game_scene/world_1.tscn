@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=4 uid="uid://binah6hgxwfcd"]
+[gd_scene load_steps=40 format=4 uid="uid://binah6hgxwfcd"]
 
 [ext_resource type="Script" path="res://Scenes/Game_scene/main.gd" id="1_82yks"]
 [ext_resource type="PackedScene" uid="uid://pt3v68ebmn6" path="res://Scenes/Game_scene/key.tscn" id="2_7uyww"]
@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://3vr7qles7yvs" path="res://Assets/tilesets/floors/carpet.png" id="6_1ou6x"]
 [ext_resource type="Texture2D" uid="uid://dts0o3myi8sd8" path="res://Assets/tilesets/RF_Catacombs_v1.0/mainlevbuild.png" id="7_c0if3"]
 [ext_resource type="Texture2D" uid="uid://ldukf2fqae02" path="res://Assets/Pixel Crawler - FREE - 1.8/Environment/Dungeon Prison/Assets/image (4).png" id="7_r52cp"]
+[ext_resource type="Script" path="res://Scripts/next_level.gd" id="8_1ech4"]
 [ext_resource type="Script" path="res://Scripts/door1.gd" id="8_7nhrn"]
 [ext_resource type="Texture2D" uid="uid://bofa2wfvbifoj" path="res://Assets/tilesets/RF_Catacombs_v1.0/decorative.png" id="9_fih6o"]
 [ext_resource type="Texture2D" uid="uid://4l6ud1t76q58" path="res://Assets/Pixel Crawler - FREE - 1.8/Environment/Dungeon Prison/Assets/Screenshot 2024-08-23 153141.png" id="11_t1s64"]
@@ -3768,6 +3769,9 @@ texture = ExtResource("4_vxlyb")
 sources/3 = SubResource("TileSetAtlasSource_18uxg")
 sources/6 = SubResource("TileSetAtlasSource_ihnj1")
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_wvkp8"]
+radius = 121.826
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_l0a30"]
 size = Vector2(30.5, 18.5)
 
@@ -3851,6 +3855,14 @@ z_index = 5
 tile_map_data = PackedByteArray("AAAoAPL/BgADAA4AAAAqAPL/BgAMAA0AAAAnAPj/BgAMAA0AAAAuAPj/BgALAAsAAAAmAPj/BgALAAwAAAAwAPj/BgAMAAwAAAAQAPf/BgAMAAsAAAAPAPb/BgALAAsAAAAPAPf/BgALAA0AAAAeAOb/BgADAA4AAAAaAAwABgAGAA8AAAAZAAsABgAHAA4AAAAZAAwABgAHAA8AAAANABcABgAHAA4AAAANABgABgAHAA8AAAAMABcABgAJAA4AAAAMABgABgAJAA8AAAAoAAMAAwALAAEAAAAoAPj/AwALAAEAAAAvAPj/AwAKAAEAAAAdAOb/AwAKAAEAAAAEAL3/AwAIAAEAAAAEAL7/AwAIAAIAAAA=")
 tile_set = SubResource("TileSet_4q5va")
 
+[node name="teleport" type="Area2D" parent="map"]
+position = Vector2(160, -1015)
+scale = Vector2(0.172596, 0.16313)
+
+[node name="next_level" type="CollisionShape2D" parent="map/teleport"]
+shape = SubResource("CircleShape2D_wvkp8")
+script = ExtResource("8_1ech4")
+
 [node name="Doors" type="Node" parent="."]
 
 [node name="door1" type="StaticBody2D" parent="Doors"]
@@ -3902,6 +3914,7 @@ texture = ExtResource("5_5pxiy")
 position = Vector2(1860, -201)
 texture = ExtResource("11_t1s64")
 
+[connection signal="body_entered" from="map/teleport" to="map/teleport/next_level" method="_on_teleport_body_entered"]
 [connection signal="door1_collision" from="Doors/door1" to="Doors/door1/door1_collision" method="_on_door_1_door_1_collision"]
 [connection signal="body_entered" from="Doors/door1/door1 zone" to="Doors/door1/door1_collision" method="_on_door_zone_body_entered"]
 [connection signal="body_entered" from="Doors/door1/door1 zone" to="Keys/key" method="_on_door_1_zone_body_entered"]
